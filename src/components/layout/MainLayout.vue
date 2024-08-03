@@ -22,9 +22,9 @@
                             </span>
                             <template #dropdown>
                                 <el-dropdown-menu>
-                                    <el-dropdown-item :icon="Avatar">Profile</el-dropdown-item>
-                                    <el-dropdown-item :icon="Key">Change Password</el-dropdown-item>
-                                    <el-dropdown-item :icon="Lock">Logout</el-dropdown-item>
+                                    <el-dropdown-item :icon="Avatar">{{ t('Profile') }}</el-dropdown-item>
+                                    <el-dropdown-item :icon="Key">{{ t('Change Password') }}</el-dropdown-item>
+                                    <el-dropdown-item :icon="Lock" @click="logout">{{ t('Logout') }}</el-dropdown-item>
                                 </el-dropdown-menu>
                             </template>
                         </el-dropdown>
@@ -42,15 +42,19 @@
 </template>
 <script lang="ts">
 import { Avatar, Lock, Key } from '@element-plus/icons-vue';
-
 import { defineComponent } from 'vue'
+import { signOut } from '~/context/AccountContext';
+import { useI18n } from 'vue-i18n';
+
 export default defineComponent({
     name: 'MainLayout',
     setup() {
+        const { t } = useI18n();
         return {
             Avatar,
             Lock,
-            Key
+            Key,
+            t
         }
     },
     data() {
@@ -58,6 +62,13 @@ export default defineComponent({
             drawer: false,
         }
     },
+    methods: {
+        logout() {
+           signOut().then(() => {
+               this.$router.push('/login');
+           });
+        }
+    }
 })
 
 </script>

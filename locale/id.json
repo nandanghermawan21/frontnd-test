@@ -5,5 +5,10 @@
   "please fill password": "mohon isi password",
   "please fill email": "mohon isi email",
   "invalid email format": "format email tidak valid",
-  "password must be at least 6 characters": "password minimal 6 karakter"
+  "password must be at least 6 characters": "password minimal 6 karakter",
+  "Invalid login credentials": "Kredensial login tidak valid",
+  "Error": "Kesalahan",
+  "Profile": "Profil",
+  "Logout": "Keluar",
+  "Change Password": "Ubah Password"
 }

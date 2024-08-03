@@ -32,30 +32,49 @@ export interface NewtPasswordType {
 }
 
 export interface AccountType {
-    accountID: number,
-    fullName: string,
-    nickName: string,
-    whatsappNumber: string,
-    idCardNumber: number, // 83562297649823642760,
-    email: string, // "john.doe@example.com",
-    professionID: number, // 1,
-    professionName: string, // "Wiraswasta",
-    posissionID: number, // 1,
-    possionName: string, // "Mekanik",
-    company: string, // "PT. Lundin Indutry Invest",
-    shopID: number, // 1,
-    shopName: string, // "JPT Denpasar",
-    sendPromoToWA: boolean, // true,
-    sendPromoToEmail: boolean, // true,
-    userAddress: string, // "Jalan Gadung no 77, Denpasar Utara",
-    userAddressLatitude: number, // -8.6392345,
-    userAddressLongitude: number, // 115.2005208,
-    dob: Date,
-    oldPassword?: string,
-    newPassword?: string,
-    newPasswordConfirmation?: string,
-    //for ui purpose
-    changePassword?: boolean,
+    access_token: string,
+    token_type: string,
+    expires_in: number,
+    expires_at: number,
+    refresh_token: string,
+    user: {
+        id: string,
+        aud: string,
+        role: string,
+        email: string,
+        email_confirmed_at: string,
+        phone: string,
+        confirmed_at: Date,
+        last_sign_in_at: Date,
+        app_metadata: {
+            provider: string,
+            providers: [
+                string
+            ]
+        },
+        user_metadata: {},
+        identities: [
+            {
+                identity_id: string,
+                id: string,
+                user_id: string,
+                identity_data: {
+                    email: string,
+                    email_verified: boolean,
+                    phone_verified: boolean,
+                    sub: string
+                },
+                provider: string,
+                last_sign_in_at: Date,
+                created_at: Date,
+                updated_at: Date,
+                email: string
+            }
+        ],
+        created_at: string,
+        updated_at: string,
+        is_anonymous: boolean
+    }
 }
 
 export interface EmailLoginType {

@@ -5,5 +5,10 @@
   "please fill password": "please fill password",
   "please fill email": "please fill email",
   "invalid email format": "invalid email format",
-  "password must be at least 6 characters": "password must be at least 6 characters"
+  "password must be at least 6 characters": "password must be at least 6 characters",
+  "Invalid login credentials": "Invalid login credentials",
+  "Error": "Error",
+  "Profile": "Profile",
+  "Logout": "Logout",
+  "Change Password": "Change Password"
 }

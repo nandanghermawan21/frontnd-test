@@ -42,8 +42,13 @@
                             </el-text>
                         </el-row>
                         <el-row class="w-full">
-                            <el-button type="primary" class="h-44 border-blue50 pl-0 px-20 w-full" @click="submit()">
-                                <el-text class="text-white text-regualar">
+                            <el-button v-loading="isLoading" type="primary" class="main h-44 border-blue50 pl-0 px-20 w-full"
+                                @click="() => {
+                                if(!isLoading) {
+                                    submit();
+                                }
+                            }">
+                                <el-text v-if="!isLoading" class="text-white text-regualar">
                                     {{ t('Login') }}
                                 </el-text>
                             </el-button>
@@ -58,11 +63,14 @@
 import { defineComponent, reactive, ref } from 'vue'
 import { BasicOptonsType } from '~/types/option';
 import { laguageDummy } from '~/dummy/option';
-import { ComponentSize, FormInstance, FormRules } from 'element-plus';
+import { ComponentSize, ElMessage, ElNotification, FormInstance, FormRules } from 'element-plus';
 import { EmailLoginType } from '~/types/account';
 import { validateEmail } from '~/utils/formValidation';
 import { useI18n } from 'vue-i18n';
 import router from '~/router';
+import ApiContext from '~/context/ApiContext';
+import { ApiEnpointUtil } from '~/utils/endpointUtil';
+import { signIn } from '~/context/AccountContext';
 
 export default defineComponent({
     setup() {
@@ -104,6 +112,7 @@ export default defineComponent({
         return {
             lang: laguageDummy,
             selectedLang: null as BasicOptonsType | null,
+            isLoading: false,
         }
     },
     methods: {
@@ -120,7 +129,28 @@ export default defineComponent({
         submit() {
             this.submitForm(this.formLogin, {
                 onSuccess: () => {
-                    router.push('/home')
+                    //login process
+                    try {
+                        this.isLoading = true;
+                        signIn({
+                            email: this.ruleFormLogin.email,
+                            password: this.ruleFormLogin.password
+                        }).then(() => {
+                            this.isLoading = false;
+                            router.push('/home')
+                        }).catch((error) => {
+                            this.isLoading = false;
+                            console.log(error)
+                            ElNotification({
+                                customClass: 'error',
+                                title: this.t('Error'),
+                                message: this.t(error.response.data.error_description),
+                                type: 'error',
+                            });
+                        })
+                    } catch (error) {
+                        this.isLoading = false;
+                    }
                 },
                 onError: () => {
                     console.log('error')
@@ -161,4 +191,5 @@ export default defineComponent({
     width: 25%;
     margin: 1em;
 }
+
 </style>

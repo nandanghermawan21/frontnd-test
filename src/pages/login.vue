@@ -1,11 +1,13 @@
 <template>
     <el-row>
         <el-col class="left-side hidden-sm-and-down" :span="18" :md="12" :lg="16">
-            <img src="/company-logo.png" alt="Company Logo" class="company-logo" />
+            <img src="/banner.webp" alt="Company Logo" class="company-logo" />
         </el-col>
         <el-col class="right-side" :span="6" :sm="24" :md="12" :xs="24" :lg="8">
-            <el-row justify="space-between" class="p-2 align-center">
-                <img src="/company-logo.png" alt="Company Logo" class="company-logo-small" />
+            <el-row justify="space-between" class="p-2 align-center" style="align-items: flex-start">
+                <div style="flex: 1">
+                    <img src="/logo_teco_ai.png" alt="Company Logo" class="company-logo-small" />
+                </div>
                 <div class="w-50 mt-5">
                     <BaseSelect :options="lang" key="id" label="name" :value="selectedLang" :prop="'lang'" :onChange="((val) => {
                         selectedLang = val;
@@ -23,13 +25,13 @@
                             </el-text>
                         </el-row>
                         <el-row class="w-full">
-                            <BaseTextInput :value="ruleFormLogin.email" title="Email" :prop="'email'" :isRequired="true"
+                            <BaseTextInput :value="ruleFormLogin.email" :title="t('Email')" :prop="'email'" :isRequired="true"
                                 :onChange="(val) => {
                                     ruleFormLogin.email = val;
                                 }" />
                         </el-row>
                         <el-row class="w-full">
-                            <BaseTextInput type="password" :value="ruleFormLogin.password" title="Password"
+                            <BaseTextInput type="password" :value="ruleFormLogin.password" :title="t('Password')"
                                 :prop="'password'" :isRequired="true" :onChange="(val) => {
                                     ruleFormLogin.password = val;
                                 }" />
@@ -42,8 +44,8 @@
                             </el-text>
                         </el-row>
                         <el-row class="w-full">
-                            <el-button v-loading="isLoading" type="primary" class="main h-44 border-blue50 pl-0 px-20 w-full"
-                                @click="() => {
+                            <el-button v-loading="isLoading" type="primary"
+                                class="main h-44 border-blue50 pl-0 px-20 w-full" @click="() => {
                                 if(!isLoading) {
                                     submit();
                                 }
@@ -64,20 +66,18 @@ import { defineComponent, reactive, ref } from 'vue'
 import { BasicOptonsType } from '~/types/option';
 import { laguageDummy } from '~/dummy/option';
 import { ComponentSize, ElMessage, ElNotification, FormInstance, FormRules } from 'element-plus';
-import { EmailLoginType } from '~/types/account';
+import { LoginType } from '~/types/account';
 import { validateEmail } from '~/utils/formValidation';
 import { useI18n } from 'vue-i18n';
 import router from '~/router';
-import ApiContext from '~/context/ApiContext';
-import { ApiEnpointUtil } from '~/utils/endpointUtil';
-import { signIn } from '~/context/AccountContext';
+import { login } from '~/services/authServices';
 
 export default defineComponent({
     setup() {
         const { t, locale } = useI18n()
         const formSize = ref<ComponentSize>('default')
         const formLogin = ref<FormInstance>()
-        const ruleFormLogin = reactive<EmailLoginType>({
+        const ruleFormLogin = reactive<LoginType>({
             email: '',
             password: '',
         });
@@ -89,7 +89,7 @@ export default defineComponent({
             callback();
         };
 
-        const rules = reactive<FormRules<EmailLoginType>>({
+        const rules = reactive<FormRules<LoginType>>({
             password: [
                 { required: true, message: t('please fill password'), trigger: 'blur' },
                 { validator: validatePassword, trigger: 'blur' },
@@ -132,13 +132,13 @@ export default defineComponent({
                     //login process
                     try {
                         this.isLoading = true;
-                        signIn({
+                        login({
                             email: this.ruleFormLogin.email,
                             password: this.ruleFormLogin.password
                         }).then(() => {
                             this.isLoading = false;
                             router.push('/home')
-                        }).catch((error) => {
+                        }).catch((error: any) => {
                             this.isLoading = false;
                             console.log(error)
                             ElNotification({
@@ -159,6 +159,8 @@ export default defineComponent({
         },
         setLang() {
             localStorage.setItem(import.meta.env.VITE_APP_KEY + '_lang', this.selectedLang?.value || 'en')
+            console.log(this.selectedLang)
+            console.log(this.selectedLang?.value)
             //apply lang
             this.locale = this.selectedLang?.value ?? 'en';
         }
@@ -179,7 +181,9 @@ export default defineComponent({
 }
 
 .company-logo {
-    width: 70%;
+    // height: 100%;
+    object-fit: contain;
+    object-position: center;
 }
 
 .right-side {

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { cookieKeyUtil } from '~/utils/cookieKeyUtil';
 
 const ApiContext = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -21,7 +22,8 @@ ApiContext.interceptors.request.use(async config => {
   config.headers['Content-Type'] = 'application/json';
 
   //add token to header
-  let token = localStorage.getItem(import.meta.env.VITE_APP_KEY + '_token');
+  let token = localStorage.getItem(cookieKeyUtil.token);
+  
   if (token) {
     config.headers[' Authorization '] = 'Bearer ' + token;
   }

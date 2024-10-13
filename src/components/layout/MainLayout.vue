@@ -8,7 +8,8 @@
                 <el-row class="header">
                     <div class="header-left-menu">
                         <el-row>
-                            <img src="/menu.webp" alt="menu icon" class="menu-icon hidden-md-and-up" @click="drawer = true" />
+                            <img src="/menu.webp" alt="menu icon" class="menu-icon hidden-md-and-up"
+                                @click="drawer = true" />
                         </el-row>
                     </div>
                     <div class="header-center-menu">
@@ -18,13 +19,34 @@
                         <el-dropdown trigger="click" class="pointer">
                             <span class="el-dropdown-link center-center">
                                 <img src="/avatar.png" alt="User" class="user-icon" />
-                                My Account
+                                {{ logedInAccount().fullName }}
                             </span>
                             <template #dropdown>
                                 <el-dropdown-menu>
                                     <el-dropdown-item :icon="Avatar">{{ t('Profile') }}</el-dropdown-item>
                                     <el-dropdown-item :icon="Key">{{ t('Change Password') }}</el-dropdown-item>
                                     <el-dropdown-item :icon="Lock" @click="logout">{{ t('Logout') }}</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                        <el-dropdown trigger="click" class="pointer w-35">
+                            <span class="center-center">
+                                <el-row :gap="2">
+                                    <img :src="selectedLang?.img" alt="flag" class="flag-icon" />
+                                    <el-text>{{ selectedLang?.name }}</el-text>
+                                </el-row>
+                            </span>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item v-for="item, index in lang" :key="index" @click="() => {
+                                        selectedLang = item;
+                                        setLang();
+                                    }">
+                                        <el-row :gap="2">
+                                            <img :src="item.img" alt="flag" class="flag-icon" />
+                                            <el-text>{{ item.name }}</el-text>
+                                        </el-row>
+                                    </el-dropdown-item>
                                 </el-dropdown-menu>
                             </template>
                         </el-dropdown>
@@ -42,32 +64,47 @@
 </template>
 <script lang="ts">
 import { Avatar, Lock, Key } from '@element-plus/icons-vue';
+import { set } from 'date-fns';
 import { defineComponent } from 'vue'
-import { signOut } from '~/context/AccountContext';
 import { useI18n } from 'vue-i18n';
+import { laguageDummy } from '~/dummy/option';
+import { logout, logedInAccount } from '~/services/authServices';
+import { BasicOptonsType } from '~/types/option';
 
 export default defineComponent({
     name: 'MainLayout',
     setup() {
-        const { t } = useI18n();
+        const { t, locale } = useI18n();
         return {
             Avatar,
             Lock,
             Key,
-            t
+            t,
+            locale,
+            logedInAccount
         }
     },
     data() {
         return {
             drawer: false,
+            lang: laguageDummy,
+            selectedLang: null as BasicOptonsType | null,
         }
     },
     methods: {
         logout() {
-           signOut().then(() => {
-               this.$router.push('/login');
-           });
+            logout().then(() => {
+                this.$router.push('/login');
+            });
+        },
+        setLang() {
+            localStorage.setItem(import.meta.env.VITE_APP_KEY + '_lang', this.selectedLang?.value || 'en')
+            this.locale = this.selectedLang?.value ?? 'en';
         }
+    },
+    mounted() {
+        var currentLang = localStorage.getItem(import.meta.env.VITE_APP_KEY + '_lang')
+        this.selectedLang = this.lang.find((item) => item.value === currentLang) || this.lang[0]
     }
 })
 
@@ -116,6 +153,7 @@ export default defineComponent({
     align-items: center;
     height: 50px;
     padding: 0 10px;
+    gap: 10px;
 }
 
 .user-icon {

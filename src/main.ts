@@ -13,12 +13,15 @@ import 'element-plus/theme-chalk/index.css';
 import VueVideoPlayer from 'vue-video-player';
 import 'video.js/dist/video-js.css';
 import VueGoogleMaps from '@fawmi/vue-google-maps'
+import { store, key } from './store'; 
 
 
 
 // Import translation files
 import en from '../locale/en.json';
 import id from '../locale/id.json';
+import cn from '../locale/cn.json';
+import tw from '../locale/tw.json';
 
 //baca detault bahasa dari local storage dengan app key dari .env plush lang
 let lang = localStorage.getItem(import.meta.env.VITE_APP_KEY + '_lang');
@@ -31,12 +34,14 @@ const i18n = createI18n({
     legacy: false,
     messages: {
         en: en,
-        id: id
+        id: id,
+        cn: cn,
+        tw: tw
     }
 });
 
 // save locale to local storage
-localStorage.setItem(import.meta.env.VITE_APP_KEY + '_lang', lang ? lang : 'en');
+localStorage.setItem(import.meta.env.VITE_APP_KEY + '_lang', lang ? lang : 'cn');
 
 const app = createApp(App);
 
@@ -46,6 +51,7 @@ app.use(i18n);
 app.use(ElementPlus);
 app.use(Vue3Lottie);
 app.use(VueVideoPlayer);
+app.use(store, key)
 
 app.use(VueGoogleMaps, {
     load: {

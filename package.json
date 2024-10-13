@@ -31,7 +31,8 @@
     "vue-video-player": "^6.0.0",
     "vue3-carousel": "^0.3.3",
     "vue3-lottie": "^3.3.0",
-    "vue3-recaptcha2": "^1.8.0"
+    "vue3-recaptcha2": "^1.8.0",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@iconify-json/ep": "^1.1.15",

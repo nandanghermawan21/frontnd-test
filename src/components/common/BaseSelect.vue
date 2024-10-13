@@ -13,7 +13,7 @@
                 <!-- @vue-ignore -->
                 <el-select class="w-full" v-model="selected" filterable remote reserve-keyword
                     :placeholder="placeHolder" @change="onChange" remote-show-suffix :remote-method="remoteMethod"
-                    :loading="loading" style="width: 240px" :placement="'bottom-start'">
+                    :loading="loading" :placement="'bottom-start'">
                     <el-option v-for="item in filtered" :key="item[key]" :label="item[label]" :value="item" />
                 </el-select>
             </el-form-item>

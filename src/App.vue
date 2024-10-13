@@ -12,7 +12,9 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { getSignInAccount } from '~/context/AccountContext';
+import ApiContext from '~/context/ApiContext';
+import { ApiEnpointUtil } from './utils/endpointUtil';
+import { store, storeKey } from '~/store';
 
 
 export default defineComponent({
@@ -30,14 +32,31 @@ export default defineComponent({
     });
 
     return {
-      isLoading
+      isLoading,
+      storeKey
     };
+  },
+  methods: {
+    setUserDetail(userDetail: any) {
+      store.commit(storeKey.setUserDetail, userDetail);
+    }
   },
   mounted() {
     //read account using account context
-    if(getSignInAccount() === null) {
-      this.$router.push('/login');
-    }
+    // if(getSignInAccount() === null) {
+    //   this.$router.push('/login');
+    // }else{
+    //   //ambil detail user
+    //   ApiContext.post(ApiEnpointUtil.getUer(), {
+    //     user_id: getSignInAccount()?.user.id
+    //   }).then((response: any) => {
+    //     this.setUserDetail(response.data[0]);
+    //   }).catch((error: any) => {
+    //     signOut().then(() => {
+    //       this.$router.push('/login');
+    //     });
+    //   });
+    // }
   }
 });
 </script>

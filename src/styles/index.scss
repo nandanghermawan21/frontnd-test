@@ -3,6 +3,7 @@ $unit: px;
 $--color-white: #ffffff;
 $--color-solidBlack: #121010;
 $--color-white50: rgb(242 242 242);
+$--color-primary: #004584;
 
 $background-color: $--color-white50;
 $primary-color: $--color-white;
@@ -10,35 +11,28 @@ $primary-color: $--color-white;
 $base-text-color: $--color-solidBlack;
 
 $--colors: (
-  "primary": (
-    "base": #154575,
+  "primary": ("base": $--color-primary,
   ),
-  "success": (
-    "base": #21ba45,
+  "success": ("base": #21ba45,
   ),
-  "warning": (
-    "base": #F76A4D,
+  "warning": ("base": #F76A4D,
   ),
-  "danger": (
-    "base": #db2828,
+  "danger": ("base": #db2828,
   ),
-  "error": (
-    "base": #db2828,
+  "error": ("base": #db2828,
   ),
-  "info": (
-    "base": #42b8dd,
+  "info": ("base": #42b8dd,
   ),
-  "menu-bg-color":(
-    "base": #154575,
+  "menu-bg-color":("base": $--color-primary,
   ),
 );
 
-@forward "element-plus/theme-chalk/src/common/var.scss" with (
-  // do not use same name, it will override.
-  $colors: $--colors,
-  $button-padding-horizontal: ("default": 50px),
-  $button-bg-color: (default: #f00)
-);
+// @forward "element-plus/theme-chalk/src/common/var.scss" with (
+//   // do not use same name, it will override.
+//   $colors: $--colors,
+//   $button-padding-horizontal: ("default": 50px),
+//   $button-bg-color: (default: #f00)
+// );
 
 body {
   font-family: Radnika, sans-serif;
@@ -57,14 +51,14 @@ a {
   height: 100%;
 }
 
-.pointer{
+.pointer {
   cursor: pointer;
 }
 
 .center-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .el-text {
@@ -73,7 +67,8 @@ a {
 
 .align-center {
   display: flex;
-  align-items: center; /* Centers content vertically */
+  align-items: center;
+  /* Centers content vertically */
 }
 
 .text-white {
@@ -88,4 +83,29 @@ a {
 .text-title {
   font-weight: 600;
   font-size: 24px;
+}
+
+.text-logo {
+  font-weight: 400;
+  font-size: 16px;
+  text-align: start;
+}
+
+.flag-icon {
+  width: 30px;
+  height: 20px;
+}
+
+.title-page {
+  font-size: 30px;
+  line-height: 2;
+  font-weight: 500;
+  color: $--color-primary;
+}
+
+.row-filter {
+  padding: 10px;
+  background-color: white;
+  margin-bottom: 10px;
+  padding-top: 20px;
 }

@@ -137,7 +137,7 @@ export default defineComponent({
                             password: this.ruleFormLogin.password
                         }).then(() => {
                             this.isLoading = false;
-                            router.push('/home')
+                            router.push('/keyword-management')
                         }).catch((error: any) => {
                             this.isLoading = false;
                             console.log(error)
